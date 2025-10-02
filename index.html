@@ -26,7 +26,7 @@
         font-family: 'Press Start 2P', cursive;
       }
       .fullscreen-viewer {
-        width: 100vw;
+    
         height: 72vh;
         max-height: 100vh;
         max-width: 100vw;
@@ -59,7 +59,7 @@
       }
       .btn-pixel {
         font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
+        font-size: 14px;
         color: white;
         padding: 12px 24px;
         border: 4px solid #222;
@@ -92,7 +92,7 @@
       /* Tombol AR pixel style */
       #ar-button {
         font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
+        font-size: 14px;
         color: white;
         background: #2c7a2c;
         border: 4px solid #1d4d1d;
@@ -129,10 +129,10 @@
           background-position: left center;
         }
         .fullscreen-viewer, model-viewer {
-          width: 100vw;
-          height: 100vh;
-          min-width: 100vw;
-          min-height: 100vh;
+          
+          height: 77vh;
+          max-width: 100vw;
+          max-height: 100vh;
         }
         .ar-btn-custom {
           font-size: 1rem;
@@ -146,18 +146,36 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   </head>
   <body>
-    <div class="container-fluid">
+    <!-- Loader overlay -->
+    <div id="loader-overlay" style="
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255,255,255,0.95);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 18px;
+    ">
+      <div class="spinner-border text-success" role="status" style="width: 4rem; height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div style="margin-top: 24px;">Loading...</div>
+    </div>
+    <div class="container-fluid" id="main-content" style="visibility:hidden;">
       <div class="row">
          <div class="fullscreen-viewer">
             <model-viewer 
               alt="Wreck-It Ralph Disney"
-              src="assets/wreck-it_ralph_disney.glb"
+              src="assets/objek.glb"
               ar
               ar-modes="webxr scene-viewer quick-look"
               shadow-intensity="1"
               camera-controls
               touch-action="pan-y"
-              ios-src="assets/wreck-it_ralph_disney.glb"
+              ios-src="assets/objek.glb"
               style="outline: none;"
               autoplay
             >
@@ -186,6 +204,23 @@
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // Loader logic
+      function hideLoader() {
+        document.getElementById('loader-overlay').style.display = 'none';
+        document.getElementById('main-content').style.visibility = 'visible';
+      }
+
+      // Wait for all resources (images, model-viewer, etc.) to be ready
+      window.addEventListener('load', () => {
+        // Wait for model-viewer to finish loading the 3D model
+        const modelViewer = document.querySelector('model-viewer');
+        if (modelViewer) {
+          modelViewer.addEventListener('load', hideLoader);
+        } else {
+          hideLoader();
+        }
+      });
+
       const btnBersedia = document.getElementById('btn-bersedia');
       const btnTidak = document.getElementById('btn-tidak');
       const ucapan = document.getElementById('ucapan');
@@ -218,7 +253,6 @@
           setTimeout(() => {
             btnBersedia.style.display = 'none';
           }, 2000);
-          
         }, 2000);
         setTimeout(() => {
           btnTidak.style.display = 'none';
