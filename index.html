@@ -71,21 +71,86 @@
         }
       }
     </style>
+
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   </head>
   <body>
-    <div class="fullscreen-viewer">
-       <model-viewer 
-         src="assets/wreck-it_ralph_disney.glb"
-  alt="3D model"
-  auto-rotate
-  camera-controls
-  ar
- ar-modes="scene-viewer webxr quick-look"
-  ar-scale="auto"
-  ar-placement="floor">
-    </model-viewer>
+    <div class="container-fluid">
+      <div class="row">
+         <div class="fullscreen-viewer">
+            <model-viewer 
+              alt="Wreck-It Ralph Disney"
+              src="assets/wreck-it_ralph_disney.glb"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              shadow-intensity="1"
+              camera-controls
+              touch-action="pan-y"
+              ios-src="assets/wreck-it_ralph_disney.glb"
+              style="outline: none;"
+              autoplay
+            >
+              <button slot="ar-button" id="ar-button">
+                View in your space
+              </button>
+            
+            </model-viewer>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <div class="col-12 text-center">
+          <button id="btn-bersedia" class="btn btn-success btn-lg mx-2">Bersedia</button>
+          <button id="btn-tidak" class="btn btn-danger btn-lg mx-2">Tidak Bersedia</button>
+        </div>
+        <div class="col-12 text-center mt-3">
+          <div id="ucapan" style="display:none;">
+            <div class="alert alert-success" role="alert">
+              Selamat! Anda telah menyatakan bersedia. Terima kasih atas partisipasi Anda.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const btnBersedia = document.getElementById('btn-bersedia');
+      const btnTidak = document.getElementById('btn-tidak');
+      const ucapan = document.getElementById('ucapan');
+
+      function showUcapanWithConfetti() {
+        ucapan.style.display = 'block';
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+
+      btnBersedia.addEventListener('click', () => {
+        btnBersedia.style.display = 'none';
+        btnTidak.style.display = 'none';
+        showUcapanWithConfetti();
+      });
+
+      btnTidak.addEventListener('click', () => {
+        btnTidak.disabled = true;
+        btnTidak.textContent = 'Memproses...';
+        btnTidak.classList.add('btn-warning');
+        btnTidak.classList.remove('btn-danger');
+        setTimeout(() => {
+          btnTidak.textContent = 'Bersedia';
+          btnTidak.classList.remove('btn-warning');
+          btnTidak.classList.add('btn-success');
+          btnTidak.disabled = false;
+          btnBersedia.style.display = 'none';
+        }, 1000);
+        setTimeout(() => {
+          btnTidak.style.display = 'none';
+          showUcapanWithConfetti();
+        }, 1200);
+      });
+    </script>
   </body>
 </html>
