@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        min-width: 100vw;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('assets/bg.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        overflow: scroll;
+      }
+      .fullscreen-viewer {
+        width: 100vw;
+        height: 100vh;
+        min-height: 100vh;
+        min-width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative; /* Agar tombol AR bisa absolute */
+      }
+      model-viewer {
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        background: transparent;
+        position: relative;
+        z-index: 1;
+      }
+      .ar-btn-custom {
+        position: absolute !important;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 2rem;
+        opacity: 0.95;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      @media (max-width: 768px) {
+        body {
+          background-position: left center;
+        }
+        .fullscreen-viewer, model-viewer {
+          width: 100vw;
+          height: 100vh;
+          min-width: 100vw;
+          min-height: 100vh;
+        }
+        .ar-btn-custom {
+          font-size: 1rem;
+          padding: 0.5rem 1.5rem;
+          bottom: 16px;
+        }
+      }
+    </style>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+  </head>
+  <body>
+    <div class="fullscreen-viewer">
+       <model-viewer 
+         src="assets/wreck-it_ralph_disney.glb"
+  alt="3D model"
+  auto-rotate
+  camera-controls
+  ar
+ ar-modes="scene-viewer webxr quick-look"
+  ar-scale="auto"
+  ar-placement="floor">
+    </model-viewer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
